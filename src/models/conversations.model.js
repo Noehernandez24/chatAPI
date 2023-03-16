@@ -11,15 +11,20 @@ const Conversations = db.define('conversations', {
         type: DataTypes.STRING(40),
         allowNull: false
     },
-    typeId: {
-        type: DataTypes.INTEGER,
+    isGroup: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        field: 'type_id',
-        defaultValue: 1
+        field: 'is_group',
+        defaultValue: false
     },
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    participantId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'participant_id'
     }
 },{
     timestamps: true,
