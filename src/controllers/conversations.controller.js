@@ -30,6 +30,40 @@ const createConversation = async (req, res, next) => {
     }
 }
 
+const addParticipantsToGroup = async (req, res, next) => {
+    try {
+      const newPartipants = req.body
+      // Verificar si cada una de las conversaciones es de tipo grupo 
+      for (const partipant of newPartipants) {
+        const conversation =
+          await ConversationsServices.getConversationWithMessages(
+            partipant.conversationId
+          )
+  
+        if (!conversation) {
+          return next({
+            status: 400,
+            message: "The conversation no exist",
+            name: "conversationId is invalid",
+          })
+        }
+  
+        if (!conversation.dataValues.isGroup) {
+          return next({
+            status: 400,
+            message: "The conversation is not group",
+            name: "Type conversation is not valid",
+          })
+        }
+      }
+
+      const result = await ConversationsServices.addParticipants(newPartipants)
+      res.status(201).json(result)
+    } catch (error) {
+      next(error)
+    }
+}
+
 const deleteConversation = async(req, res, next) => {
     try {
         const {id} = req.params
@@ -44,5 +78,6 @@ module.exports = {
     createConversation,
     getUserConversation,
     getConversationWithMessages,
-    deleteConversation
+    deleteConversation,
+    addParticipantsToGroup
 }

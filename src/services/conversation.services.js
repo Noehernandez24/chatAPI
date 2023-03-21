@@ -18,6 +18,15 @@ class ConversationsServices{
         }
     }
 
+    static async addParticipants(newParticants){
+        try {
+            const result = await ConversationsParticipants.bulkCreate(newParticants)
+            return result
+        } catch (error) {
+            throw error
+        }
+    }
+
     static async getConversation(id){
         try {
             const result = await Users.findByPk(id, {
